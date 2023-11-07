@@ -269,7 +269,7 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
         helpTextTitleExample: 'Example',
         helpTextIntroduction: 'The first line is the question and the next lines are the answer alternatives. The correct alternatives are prefixed with an asterisk(*), feedback can also be added: *alternative:tip:feedback if chosen:feedback if not chosen.',
         helpTextExample: 'What type of berry is commonly used to make a traditional Scandinavian dessert called "rødgrød"?\n*Red Currant\nBlueberry\nStrawberry',
-        warningHeaderText: 'Confirm warning noticed',
+        warningHeaderText: 'Confirm warning notice',
         warningDialogText: 'Warning! If you change the task in the textual editor all rich text formatting (incl. line breaks) will be removed.',
         ok: 'OK'
       }
