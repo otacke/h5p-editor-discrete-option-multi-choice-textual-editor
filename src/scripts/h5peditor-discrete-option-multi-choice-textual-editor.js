@@ -56,8 +56,14 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
     if (this.questionTextInstance) {
       const questionText = Util.encodeForHTML(textLines.shift());
 
-      this.questionTextInstance.$input.get(0).innerHTML =
-        `<p>${questionText}</p>\n`;
+      if (this.questionTextInstance.ckeditor?.status === 'ready') {
+        this.questionTextInstance.ckeditor.setData(`<p>${questionText}</p>\n`);
+      }
+      else {
+        this.questionTextInstance.$input.get(0).innerHTML =
+          `<p>${questionText}</p>\n`;
+      }
+
       this.questionTextInstance.validate();
     }
 
@@ -90,7 +96,7 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
       return;
     }
 
-    if (!this.questionText) {
+    if (!this.questionText && this.questionText !== '') {
       // Ensure that field is validated, so changes have been applied
       this.questionTextInstance?.validate();
 
