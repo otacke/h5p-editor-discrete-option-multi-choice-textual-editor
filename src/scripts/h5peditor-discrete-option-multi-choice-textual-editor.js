@@ -140,6 +140,16 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
     $wrapper.get(0).classList.add(
       'h5p-editor-discrete-option-multi-choice-textual-editor'
     );
+
+    const dialog = new H5P.ConfirmationDialog({
+      headerText: this.dictionary.get('l10n.warningHeaderText'),
+      dialogText: this.dictionary.get('l10n.warningDialogText'),
+      confirmText: this.dictionary.get('l10n.ok'),
+      hideCancel: true
+    });
+
+    dialog.appendTo(document.body);
+    dialog.show();
   }
 
   /**
@@ -252,7 +262,10 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
         helpTextTitleMain: 'Important instructions',
         helpTextTitleExample: 'Example',
         helpTextIntroduction: 'The first line is the question and the next lines are the answer alternatives. The correct alternatives are prefixed with an asterisk(*), feedback can also be added: *alternative:tip:feedback if chosen:feedback if not chosen.',
-        helpTextExample: 'What type of berry is commonly used to make a traditional Scandinavian dessert called "rødgrød"?\n*Red Currant\nBlueberry\nStrawberry'
+        helpTextExample: 'What type of berry is commonly used to make a traditional Scandinavian dessert called "rødgrød"?\n*Red Currant\nBlueberry\nStrawberry',
+        warningHeaderText: 'Confirm warning noticed',
+        warningDialogText: 'Warning! If you change the task in the textual editor all rich text formatting (incl. line breaks) will be removed.',
+        ok: 'OK'
       }
     }, translations);
   }

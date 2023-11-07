@@ -3,6 +3,9 @@
     "l10n.helpTextTitleMain": "Important instructions",
     "l10n.helpTextTitleExample": "Example",
     "l10n.helpTextIntroduction": "The first line is the question and the next lines are the answer alternatives. The correct alternatives are prefixed with an asterisk(*), feedback can also be added: *alternative:feedback if chosen:feedback if not chosen.",
-    "l10n.helpTextExampleText": "What type of berry is commonly used to make a traditional Scandinavian dessert called \"rødgrød\"?\n*Red Currant\nBlueberry\nStrawberry"
+    "l10n.helpTextExampleText": "What type of berry is commonly used to make a traditional Scandinavian dessert called \"rødgrød\"?\n*Red Currant\nBlueberry\nStrawberry",
+    "l10n.warningHeaderText": "Confirm warning noticed",
+    "l10n.warningDialogText": "Warning! If you change the task in the textual editor all rich text formatting (incl. line breaks) will be removed.",
+    "l10n.ok": "OK"
   }
 }
