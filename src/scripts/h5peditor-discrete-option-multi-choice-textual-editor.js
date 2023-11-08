@@ -100,7 +100,12 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
       // Ensure that field is validated, so changes have been applied
       this.questionTextInstance?.validate();
 
-      console.log(this.questionTextInstance);
+      // Prevent changing question field
+      this.questionTextInstance?.$item.get(0).classList.add('disabled');
+      if (this.questionTextInstance.ckeditor?.status === 'ready') {
+        this.questionTextInstance.ckeditor.setReadOnly(true);
+      }
+
 
       this.questionText = Util.HTMLtoPlainTextLine(
         this.questionTextInstance?.value || ''
@@ -165,6 +170,12 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
    */
   remove() {
     delete this.questionText;
+
+    // Allow changing question field
+    this.questionTextInstance?.$item.get(0).classList.remove('disabled');
+    if (this.questionTextInstance?.ckeditor?.status === 'ready') {
+      this.questionTextInstance.ckeditor.setReadOnly?.(false);
+    }
 
     this.inputField.remove();
   }
