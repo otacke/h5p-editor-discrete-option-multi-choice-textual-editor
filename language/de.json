@@ -1,0 +1,11 @@
+{
+  "libraryStrings": {
+    "l10n.helpTextTitleMain": "Wichtige Hinweise",
+    "l10n.helpTextTitleExample": "Beispiel",
+    "l10n.helpTextIntroduction": "Die erste Zeile ist die Frage und die folgenden Zeilen sind die Antwortmöglichkeiten. Vor die richtigen Antworten werden Sternchen (*) gestellt. Auch Rückmeldungen können hinzugefügt werden: *Antwortmöglichkeit:Rückmeldung wenn gewählt:Rückmeldung wenn nicht gewählt.",
+    "l10n.helpTextExampleText": "Welche Beerensorte wird üblicherweise für die Zubereitung eines traditionellen skandinavischen Desserts namens „Rødgrød“ verwendet?\n*Rote Johannisbeere\nBlaubeere\nErdbeere",
+    "l10n.warningHeaderText": "Bestätige den Warnhinweis",
+    "l10n.warningDialogText": "Achtung: Wenn die Fragen im Texteditor verändert werden, werden alle Formatierungen (und Zeilenumbrüche) entfernt.",
+    "l10n.ok": "OK"
+  }
+}
