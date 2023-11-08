@@ -57,7 +57,7 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
       const questionText = Util.encodeForHTML(textLines.shift());
 
       if (this.questionTextInstance.ckeditor?.status === 'ready') {
-        this.questionTextInstance.ckeditor.setData(`<p>${questionText}</p>\n`);
+        this.questionTextInstance.forceValue(`<p>${questionText}</p>\n`);
       }
       else {
         this.questionTextInstance.$input.get(0).innerHTML =
@@ -99,6 +99,8 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
     if (!this.questionText && this.questionText !== '') {
       // Ensure that field is validated, so changes have been applied
       this.questionTextInstance?.validate();
+
+      console.log(this.questionTextInstance);
 
       this.questionText = Util.HTMLtoPlainTextLine(
         this.questionTextInstance?.value || ''
