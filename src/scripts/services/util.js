@@ -1,6 +1,3 @@
-import { decode, encode } from 'he';
-import showdown from 'showdown';
-
 /** Class for utility functions */
 export default class Util {
   /**
@@ -27,62 +24,6 @@ export default class Util {
   }
 
   /**
-   * Retrieve string without HTML tags.
-   * @param {string} html Input string.
-   * @returns {string} Output string.
-   */
-  static stripHTML(html) {
-    const div = document.createElement('div');
-    div.innerHTML = html;
-    return div.textContent || div.innerText || '';
-  }
-
-  /**
-   * HTML decode and strip HTML.
-   * @param {string|object} html html.
-   * @returns {string} html value.
-   */
-  static purifyHTML(html) {
-    if (typeof html !== 'string') {
-      return '';
-    }
-
-    return Util.stripHTML(decode(html));
-  }
-
-  /**
-   * Convert HTML content into a single line of plain text.
-   * @param {string} html HTML content to convert to plain text.
-   * @returns {string} Plain text representation of the HTML content.
-   */
-  static HTMLtoPlainTextLine(html) {
-    html = Util.purifyHTML(html);
-
-    return html
-      .replace(/[\n\r]/g, ' ')
-      .replace(/\s\s+/g, ' ')
-      .trim();
-  }
-
-  /**
-   * Decode HTML to plain text.
-   * @param {string} html HTML.
-   * @returns {string} Text decoded from HTML. Careful, can contain HTML tags!
-   */
-  static decodeForText(html) {
-    return decode(html);
-  }
-
-  /**
-   * Encode text to be printable as HTML.
-   * @param {string} text Text.
-   * @returns {string} Text encoded for HTML display.
-   */
-  static encodeForHTML(text) {
-    return encode(text);
-  }
-
-  /**
    * Retrieve the main editor form for an H5PEditor widget instance.
    * @param {object} instance H5PEditor widget instance.
    * @returns {H5PEditor.Form|null} Main editor form, or null if not found.
@@ -100,23 +41,24 @@ export default class Util {
   }
 
   /**
-   * Convert markdown to html.
-   * @param {string} markdown Markdown text.
-   * @param {object} [options] Options.
-   * @param {boolean} [options.separateWithBR] True separate parapgraphs with breaks.
-   * @returns {string} HTML text.
+   * Get localization defaults from H5P core if possible to keep uniform.
+   * @param {object[]} keyPairs containing local key and h5pCore key.
+   * @returns {object} Translation object with available l10n from H5P core.
    */
-  static markdownToHTML(markdown, options = {}) {
-    const converter = new showdown.Converter();
-    let html = converter.makeHtml(markdown);
+  static getH5PCoreL10ns(keyPairs = []) {
+    const l10n = {};
 
-    if (options.separateWithBR) {
-      html = html
-        .replace(/<\/p>(\n)?<p>/g, '\n\n')
-        .replace(/<(\/)?p>/g, '')
-        .replace(/\n/g, '<br />');
-    }
+    keyPairs.forEach((keys) => {
+      if (typeof keys.local !== 'string' || typeof keys.h5pCore !== 'string') {
+        return;
+      }
 
-    return html;
+      const h5pCoreTranslation = H5PEditor.t('core', keys.h5pCore);
+      if (h5pCoreTranslation.indexOf('Missing translation') !== 0) {
+        l10n[keys.local] = h5pCoreTranslation;
+      }
+    });
+
+    return { l10n: l10n };
   }
 }

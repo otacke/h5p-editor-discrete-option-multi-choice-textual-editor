@@ -1,5 +1,7 @@
 import Util from '@services/util.js';
+import UtilText from '@services/util-text.js';
 import Dictionary from '@services/dictionary.js';
+import QuestionTextField from '@controllers/question-text-field.js';
 
 import '@styles/h5peditor-discrete-option-multi-choice-textual-editor.scss';
 
@@ -16,9 +18,8 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
     this.dictionary = new Dictionary();
     this.fillDictionary();
 
-    this.questionTextInstance = H5PEditor.findField(
-      'question', Util.getMainEditorForm(list)
-    );
+    this.questionTextField = new QuestionTextField(list);
+    this.questionTextField.disable();
 
     // Will be used by H5P.List / H5P.SemanticsStructure
     this.helpText = this.buildHelpText();
@@ -39,6 +40,8 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
       'placeholder', this.dictionary.get('l10n.helpTextExampleText')
     );
 
+    this.inputField.value = this.questionTextField.getText();
+
     this.inputField.addEventListener('change', () => {
       this.recreateList();
     });
@@ -48,24 +51,12 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
    * Recreate the list for H5P.List.
    */
   recreateList() {
+    this.isRecreatingList = true;
+
     // Get text input
     const textLines = this.inputField.value.split('\n');
 
-    this.isRecreatingList = true;
-
-    if (this.questionTextInstance) {
-      const questionText = Util.encodeForHTML(textLines.shift());
-
-      if (this.questionTextInstance.ckeditor?.status === 'ready') {
-        this.questionTextInstance.forceValue(`<p>${questionText}</p>\n`);
-      }
-      else {
-        this.questionTextInstance.$input.get(0).innerHTML =
-          `<p>${questionText}</p>\n`;
-      }
-
-      this.questionTextInstance.validate();
-    }
+    this.questionTextField.setText(textLines.shift());
 
     // Reset list, not using list.removeAllItems() as this does not trigger events
     const listLength = this.list.getValue()?.length ?? 0;
@@ -76,7 +67,7 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
     }
 
     textLines.forEach((textline) => {
-      this.list.addItem(this.parseAnswerOption(textline));
+      this.list.addItem(UtilText.parseAnswerOption(textline));
     });
 
     this.isRecreatingList = false;
@@ -89,59 +80,15 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
    */
   addItem(item) {
     if (this.isRecreatingList) {
-      return;
+      return; // Busy
     }
 
     if (!(item instanceof H5PEditor.Group)) {
-      return;
+      return; // Item must be a group widget field
     }
 
-    if (!this.questionText && this.questionText !== '') {
-      // Ensure that field is validated, so changes have been applied
-      this.questionTextInstance?.validate();
-
-      // Prevent changing question field
-      this.questionTextInstance?.$item.get(0).classList.add('disabled');
-      if (this.questionTextInstance.ckeditor?.status === 'ready') {
-        this.questionTextInstance.ckeditor.setReadOnly(true);
-      }
-
-
-      this.questionText = Util.HTMLtoPlainTextLine(
-        this.questionTextInstance?.value || ''
-      );
-      this.inputField.value = this.questionText;
-    }
-
-    const isCorrect = H5PEditor.findField('correct', item)?.value ?? false;
-
-    /*
-     * Stringify the item fields to something along the lines of
-     * *answerOption:chosenFeedback:notChosenFeedback
-     * * indicates correct answer option, feedback is optional
-     */
-    let option = isCorrect ? '*' : '';
-
-    const text = H5PEditor.findField('text', item)?.value || '';
-    option = `${option}${Util.HTMLtoPlainTextLine(text)}`;
-
-    const notChosenFeedback = H5PEditor.findField(
-      'hintAndFeedback/notChosenFeedback', item
-    )?.value;
-
-    const chosenFeedback = H5PEditor.findField(
-      'hintAndFeedback/chosenFeedback', item
-    )?.value || (notChosenFeedback ? '' : undefined);
-
-    if (chosenFeedback !== undefined) {
-      option = `${option}:${Util.HTMLtoPlainTextLine(chosenFeedback)}`;
-    }
-
-    if (notChosenFeedback) {
-      option = `${option}:${Util.HTMLtoPlainTextLine(notChosenFeedback)}`;
-    }
-
-    this.inputField.value = `${this.inputField.value}\n${option}`;
+    this.inputField.value =
+      `${this.inputField.value}\n${UtilText.stringifyAnswerOption(item)}`;
   }
 
   /**
@@ -169,43 +116,8 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
    * Remove self. Invoked by H5P core.
    */
   remove() {
-    delete this.questionText;
-
-    // Allow changing question field
-    this.questionTextInstance?.$item.get(0).classList.remove('disabled');
-    if (this.questionTextInstance?.ckeditor?.status === 'ready') {
-      this.questionTextInstance.ckeditor.setReadOnly?.(false);
-    }
-
+    this.questionTextField.enable();
     this.inputField.remove();
-  }
-
-  /**
-   * Parse answer option text line to extract relevant information.
-   * @param {string} textline The text line containing the answer option information.
-   * @returns {object} An object containing the parsed answer option details.
-   * @property {string} text The HTML-encoded option text.
-   * @property {boolean} correct Indicates whether the option is correct.
-   * @property {object} hintAndFeedback An object containing feedback for the option.
-   * @property {string} hintAndFeedback.chosenFeedback Feedback for chosen (selected) option.
-   * @property {string} hintAndFeedback.notChosenFeedback Feedback for not chosen (deselected) option.
-   */
-  parseAnswerOption(textline) {
-    const isCorrect = textline.indexOf('*') === 0;
-    const optionTextRaw = isCorrect ? textline.substring(1) : textline;
-    const splits = optionTextRaw.split(':');
-    const notChosenFeedback = splits.length > 2 ? splits.pop() : '';
-    const chosenFeedback = splits.length > 1 ? splits.pop() : '';
-    const optionText = `<p>${Util.encodeForHTML(splits.join(':'))}</p>\n`;
-
-    return {
-      text: optionText,
-      correct: isCorrect,
-      hintAndFeedback: {
-        chosenFeedback: chosenFeedback,
-        notChosenFeedback: notChosenFeedback
-      }
-    };
   }
 
   /**
@@ -218,7 +130,7 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
         .libraryStrings || {};
 
     // Get l10n from H5P core if available to keep uniform translations
-    let translations = this.getH5PCoreL10ns([
+    let translations = Util.getH5PCoreL10ns([
       { local: 'helpTextTitleMain', h5pCore: 'importantInstructions' },
       { local: 'helpTextTitleExample', h5pCore: 'example' }
     ]);
@@ -246,28 +158,6 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
     this.dictionary.fill(translations, {
       markdownToHTML: ['helpTextIntroduction']
     });
-  }
-
-  /**
-   * Get localization defaults from H5P core if possible to keep uniform.
-   * @param {object[]} keyPairs containing local key and h5pCore key.
-   * @returns {object} Translation object with available l10n from H5P core.
-   */
-  getH5PCoreL10ns(keyPairs = []) {
-    const l10n = {};
-
-    keyPairs.forEach((keys) => {
-      if (typeof keys.local !== 'string' || typeof keys.h5pCore !== 'string') {
-        return;
-      }
-
-      const h5pCoreTranslation = H5PEditor.t('core', keys.h5pCore);
-      if (h5pCoreTranslation.indexOf('Missing translation') !== 0) {
-        l10n[keys.local] = h5pCoreTranslation;
-      }
-    });
-
-    return { l10n: l10n };
   }
 
   /**
@@ -300,14 +190,14 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
     const header = `<div class="header">${title}</div>`;
 
     // Body with description and example
-    const introductionText = Util.markdownToHTML(
+    const introductionText = UtilText.markdownToHTML(
       this.dictionary.get('l10n.helpTextIntroduction'),
       { separateWithBR: true }
     );
     const description = `<div class="description">${introductionText}</div>`;
 
     const exampleTitle = `<div class="example-title">${this.dictionary.get('l10n.helpTextTitleExample')}</div>`;
-    const exampleText = Util.markdownToHTML(
+    const exampleText = UtilText.markdownToHTML(
       this.dictionary.get('l10n.helpTextExample'),
       { separateWithBR: true }
     );

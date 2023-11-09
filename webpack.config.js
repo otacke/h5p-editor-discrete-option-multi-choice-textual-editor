@@ -15,6 +15,7 @@ export default {
   mode: mode,
   resolve: {
     alias: {
+      '@controllers': _resolve(__dirname, 'src/scripts/controllers'),
       '@scripts': _resolve(__dirname, 'src/scripts'),
       '@services': _resolve(__dirname, 'src/scripts/services'),
       '@styles': _resolve(__dirname, 'src/styles')

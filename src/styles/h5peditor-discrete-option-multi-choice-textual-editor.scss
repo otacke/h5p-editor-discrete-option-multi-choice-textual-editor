@@ -1,16 +1,3 @@
-.h5peditor.h5p-discreteoptionmultichoice-editor {
-  .field.field-name-question {
-    &.disabled {
-      .ckeditor {
-        background-color: rgba(239, 239, 239, 0.3);
-        color: rgb(84, 84, 84);
-        cursor: none;
-        pointer-events: none;
-      }
-    }
-  }
-}
-
 .h5p-editor-discrete-option-multi-choice-textual-editor {
 
   .h5p-editor-discrete-option-multi-choice-textual-editor-textarea {

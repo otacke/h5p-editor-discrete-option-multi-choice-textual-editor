@@ -1,4 +1,4 @@
-import Util from '@services/util.js';
+import UtilText from '@services/util-text.js';
 
 export default class Dictionary {
 
@@ -52,7 +52,7 @@ export default class Dictionary {
       }
     }
     else if (typeof translation === 'string') {
-      translation = Util.purifyHTML(translation);
+      translation = UtilText.purifyHTML(translation);
     }
     else {
       // Invalid translation
