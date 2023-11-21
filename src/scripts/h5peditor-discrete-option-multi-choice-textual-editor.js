@@ -5,7 +5,7 @@ import QuestionTextField from '@controllers/question-text-field.js';
 
 import '@styles/h5peditor-discrete-option-multi-choice-textual-editor.scss';
 
-/** Class for PDiscreteOptionMultiChoice H5P widget */
+/** Class for DiscreteOptionMultiChoice H5P widget */
 export default class DiscreteOptionMultiChoiceTextualEditor {
   /**
    * @class
@@ -53,8 +53,9 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
   recreateList() {
     this.isRecreatingList = true;
 
-    // Get text input
-    const textLines = this.inputField.value.split('\n');
+    // Get text input and remove empty lines
+    const textLines = this.inputField.value.split('\n')
+      .filter((textLine) => textLine.trim() !== '');
 
     this.questionTextField.setText(textLines.shift());
 
