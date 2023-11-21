@@ -1,6 +1,6 @@
 {
   "name": "h5peditor-discrete-option-multi-choice-textual-editor",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Allow textual input of questions",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
