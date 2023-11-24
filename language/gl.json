@@ -1,0 +1,11 @@
+{
+  "libraryStrings": {
+    "l10n.helpTextTitleMain": "Instrucións importantes",
+    "l10n.helpTextTitleExample": "Exemplo",
+    "l10n.helpTextIntroduction": "A primeira liña é a pregunta e as seguintes liñas son as alternativas de resposta. As alternativas correctas van prefixadas cun asterisco (*), tamén se poden engadir comentarios: *alternative:feedback se o escollemos:feedback se non.",
+    "l10n.helpTextExampleText": "Que tipo de baga se usa habitualmente para facer unha sobremesa tradicional escandinava chamada \"rødgrød\"?\n* Grosella vermella\nArándano\nAmorodo",
+    "l10n.warningHeaderText": "Mensaxe de confirmación de aviso",
+    "l10n.ok": "OK",
+    "l10n.warningDialogText": "Ollo! Se cambias as tarefas no editor, eliminarase todo o formato de texto enriquecido (incluíndo saltos de liña)."
+  }
+}
