@@ -1,0 +1,11 @@
+{
+  "libraryStrings": {
+    "l10n.helpTextTitleMain": "Instrucciones importantes",
+    "l10n.helpTextTitleExample": "Ejemplo",
+    "l10n.helpTextIntroduction": "La primera línea es la pregunta y las siguientes líneas son las alternativas de respuesta. Las alternativas correctas tienen un prefijo de asterisco (*); también se pueden agregar comentarios: *alternativa: comentarios si se elige: comentarios si no se elige.",
+    "l10n.helpTextExampleText": "¿Qué tipo de baya se utiliza habitualmente para preparar un postre tradicional escandinavo llamado \"rødgrød\"?\n*Grosella\nArándano\nFresa",
+    "l10n.warningHeaderText": "Mensaje de confirmación de advertencia",
+    "l10n.warningDialogText": "¡Advertencia! Si cambia los trabajos en el editor de texto, se eliminará todo el formato de texto enriquecido (incl. saltos de línea).",
+    "l10n.ok": "OK"
+  }
+}
