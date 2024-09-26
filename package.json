@@ -1,6 +1,6 @@
 {
   "name": "h5peditor-discrete-option-multi-choice-textual-editor",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Allow textual input of questions",
   "scripts": {
     "lint": "stylelint './src/**/*.scss' && eslint './src/**/*.js'",
