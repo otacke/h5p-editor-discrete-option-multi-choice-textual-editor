@@ -1,6 +1,9 @@
 import { decode, encode } from 'he';
 import showdown from 'showdown';
 
+/** @constant {number} NOT_CHOSEN_FEEDBACK_INDEX Index for not chosen feedback */
+const NOT_CHOSEN_FEEDBACK_INDEX = 2;
+
 /** Class for text utility functions */
 export default class UtilText {
   /**
@@ -96,11 +99,11 @@ export default class UtilText {
     option = `${option}${UtilText.HTMLtoPlainTextLine(text)}`;
 
     const notChosenFeedback = H5PEditor.findField(
-      'hintAndFeedback/notChosenFeedback', item
+      'hintAndFeedback/notChosenFeedback', item,
     )?.value;
 
     const chosenFeedback = H5PEditor.findField(
-      'hintAndFeedback/chosenFeedback', item
+      'hintAndFeedback/chosenFeedback', item,
     )?.value || (notChosenFeedback ? '' : undefined);
 
     if (chosenFeedback !== undefined) {
@@ -128,7 +131,7 @@ export default class UtilText {
     const isCorrect = textline.indexOf('*') === 0;
     const optionTextRaw = isCorrect ? textline.substring(1) : textline;
     const splits = optionTextRaw.split(':');
-    const notChosenFeedback = splits.length > 2 ? splits.pop() : '';
+    const notChosenFeedback = splits.length > NOT_CHOSEN_FEEDBACK_INDEX ? splits.pop() : '';
     const chosenFeedback = splits.length > 1 ? splits.pop() : '';
     const optionText = `<p>${UtilText.encodeForHTML(splits.join(':'))}</p>\n`;
 
@@ -137,8 +140,8 @@ export default class UtilText {
       correct: isCorrect,
       hintAndFeedback: {
         chosenFeedback: chosenFeedback,
-        notChosenFeedback: notChosenFeedback
-      }
+        notChosenFeedback: notChosenFeedback,
+      },
     };
   }
 }

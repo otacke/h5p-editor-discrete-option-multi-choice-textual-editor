@@ -27,17 +27,17 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
     // DOM
     this.inputField = document.createElement('textarea');
     this.inputField.classList.add(
-      'h5p-editor-discrete-option-multi-choice-textual-editor-textarea'
+      'h5p-editor-discrete-option-multi-choice-textual-editor-textarea',
     );
     this.inputField.setAttribute('id', list.getId());
     if (list.getDescriptionId()) {
       this.inputField.setAttribute('aria-describedby', list.getDescriptionId());
     }
     this.inputField.setAttribute(
-      'rows', DiscreteOptionMultiChoiceTextualEditor.DEFAULT_ROWS
+      'rows', DiscreteOptionMultiChoiceTextualEditor.DEFAULT_ROWS,
     );
     this.inputField.setAttribute(
-      'placeholder', this.dictionary.get('l10n.helpTextExampleText')
+      'placeholder', this.dictionary.get('l10n.helpTextExampleText'),
     );
 
     this.inputField.value = this.questionTextField.getText();
@@ -99,14 +99,14 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
   appendTo($wrapper) {
     $wrapper.get(0).append(this.inputField);
     $wrapper.get(0).classList.add(
-      'h5p-editor-discrete-option-multi-choice-textual-editor'
+      'h5p-editor-discrete-option-multi-choice-textual-editor',
     );
 
     const dialog = new H5P.ConfirmationDialog({
       headerText: this.dictionary.get('l10n.warningHeaderText'),
       dialogText: this.dictionary.get('l10n.warningDialogText'),
       confirmText: this.dictionary.get('l10n.ok'),
-      hideCancel: true
+      hideCancel: true,
     });
 
     dialog.appendTo(document.body);
@@ -133,7 +133,7 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
     // Get l10n from H5P core if available to keep uniform translations
     let translations = Util.getH5PCoreL10ns([
       { local: 'helpTextTitleMain', h5pCore: 'importantInstructions' },
-      { local: 'helpTextTitleExample', h5pCore: 'example' }
+      { local: 'helpTextTitleExample', h5pCore: 'example' },
     ]);
 
     for (const key in plainTranslations) {
@@ -157,7 +157,7 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
     translations = this.sanitizeTranslations(translations);
 
     this.dictionary.fill(translations, {
-      markdownToHTML: ['helpTextIntroduction']
+      markdownToHTML: ['helpTextIntroduction'],
     });
   }
 
@@ -171,12 +171,15 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
       l10n: {
         helpTextTitleMain: 'Important instructions',
         helpTextTitleExample: 'Example',
+        // eslint-disable-next-line @stylistic/js/max-len
         helpTextIntroduction: 'The first line is the question and the next lines are the answer alternatives. The correct alternatives are prefixed with an asterisk(*), feedback can also be added: *alternative:tip:feedback if chosen:feedback if not chosen.',
+        // eslint-disable-next-line @stylistic/js/max-len
         helpTextExample: 'What type of berry is commonly used to make a traditional Scandinavian dessert called "rødgrød"?\n*Red Currant\nBlueberry\nStrawberry',
         warningHeaderText: 'Confirm warning notice',
+        // eslint-disable-next-line @stylistic/js/max-len
         warningDialogText: 'Warning! If you change the task in the textual editor all rich text formatting (incl. line breaks) will be removed.',
-        ok: 'OK'
-      }
+        ok: 'OK',
+      },
     }, translations);
   }
 
@@ -193,14 +196,14 @@ export default class DiscreteOptionMultiChoiceTextualEditor {
     // Body with description and example
     const introductionText = UtilText.markdownToHTML(
       this.dictionary.get('l10n.helpTextIntroduction'),
-      { separateWithBR: true }
+      { separateWithBR: true },
     );
     const description = `<div class="description">${introductionText}</div>`;
 
     const exampleTitle = `<div class="example-title">${this.dictionary.get('l10n.helpTextTitleExample')}</div>`;
     const exampleText = UtilText.markdownToHTML(
       this.dictionary.get('l10n.helpTextExample'),
-      { separateWithBR: true }
+      { separateWithBR: true },
     );
     const exampleTextDOM = `<div class="example-text">${exampleText}</div>`;
     const example = `<div class="example">${exampleTitle}${exampleTextDOM}</div>`;

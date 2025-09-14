@@ -11,7 +11,7 @@ export default class QuestionTextField {
    */
   constructor(list) {
     this.questionTextInstance = H5PEditor.findField(
-      'question', Util.getMainEditorForm(list)
+      'question', Util.getMainEditorForm(list),
     );
   }
 
